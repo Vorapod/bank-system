@@ -1,1 +1,5 @@
 /.vs
+/BankSystem.Database/bin
+/BankSystem.Database/obj
+\bin**
+\obj
