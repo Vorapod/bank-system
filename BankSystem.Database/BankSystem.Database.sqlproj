@@ -58,4 +58,15 @@
   <ItemGroup>
     <Folder Include="Properties" />
   </ItemGroup>
+  <ItemGroup>
+    <Build Include="Customer.sql" />
+    <Build Include="Account.sql" />
+    <Build Include="Transaction.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="BankSystem.Database.refactorlog" />
+  </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="InitialData.sql" />
+  </ItemGroup>
 </Project>
