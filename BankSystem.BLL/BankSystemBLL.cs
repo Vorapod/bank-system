@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
 using BankSystem.BLL.Interface;
 using BankSystem.BLL.Model;
-using BankSystem.DAL;
 using BankSystem.DAL.Interface;
+using BankSystem.DAL;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace BankSystem.BLL
 {
@@ -26,8 +27,13 @@ namespace BankSystem.BLL
                 Account poco = _mapper.Map<AccountModel, Account>(account);
                 
                 //TODO: Get IBANNumber from website with selenium
-                //poco.IBANNumber = GetIBANNumber();
+                if(String.IsNullOrEmpty(account.IBANNumber))
+                poco.IBANNumber = GetIBANNumber();
+
+                //TODO: Find the way set defalut value
                 poco.CreatedDate = DateTime.Now;
+                poco.Balance = Convert.ToDecimal(10.50);
+                poco.IsActive = true;
 
                 _unitOfWork.AccountRepository.Add(poco);
                 _unitOfWork.Commit();
@@ -46,9 +52,20 @@ namespace BankSystem.BLL
             }
         }
 
+        #region Private method
         private string GetIBANNumber()
         {
-            return "Random IBANNumber";
+            return RandomString(18);
         }
+
+        private static Random random = new Random();
+        public static string RandomString(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+        #endregion
+
     }
 }

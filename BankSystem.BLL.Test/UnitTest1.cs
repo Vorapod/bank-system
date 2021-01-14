@@ -16,17 +16,16 @@ namespace BankSystem.BLL.Test
             UnitOfWork uow = new UnitOfWork(db);
             MapperConfiguration mp = new MapperConfiguration(config =>
             {
-                config.CreateMap<CustomerModel, Customer>().ReverseMap();
+                config.CreateMap<AccountModel, Account>().ReverseMap();
 
             });
 
             var mapper = new Mapper(mp);
 
             BankSystemBLL bll = new BankSystemBLL(uow, mapper);
-            bll.AddCustomer(new CustomerModel
+            bll.AddAccount(new AccountModel
             {
-                UserName = "user3",
-                Password = "123"
+                Name = "my account"
             });
         }
     }
