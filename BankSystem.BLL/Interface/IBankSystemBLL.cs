@@ -13,5 +13,18 @@ namespace BankSystem.BLL.Interface
         CustomerModel UpdateCustomer(int customerId, CustomerModel customer);
         void DeleteCustomer(int customerId);
         #endregion
+
+        #region [Account]
+        AccountModel AddAccount(AccountModel account);
+        void DeleteAccount(string IBANNumber);
+        IEnumerable<AccountModel> GetAccounts(int customerId);
+
+        #endregion
+
+        #region [Transaction]
+        //void Deposite(TransferModel transfer);
+        //void Transfer(TransferModel transfer);
+        IEnumerable<TransactionModel> GetTransactions(string IBANNumber);
+        #endregion
     }
 }

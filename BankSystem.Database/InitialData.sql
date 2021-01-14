@@ -11,6 +11,3 @@ Post-Deployment Script Template
 */
 
 --Initial data into table customer
-INSERT INTO [dbo].[Customer]([UserName],[Password],[CreateDate])
-     VALUES ('UserOne' ,'111',GetDate()),
-	 ('UserTwo' ,'222',GetDate())

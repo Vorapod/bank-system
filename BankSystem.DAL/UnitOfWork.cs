@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace BankSystem.DAL
 {
-    class UnitOfWork : IUnitOfWork
+    public class UnitOfWork : IUnitOfWork
     {
         private readonly DbContext _dbContext;
         public UnitOfWork(DbContext dbContext)
