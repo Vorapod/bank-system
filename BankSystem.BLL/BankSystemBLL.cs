@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BankSystem.BLL.Enum;
 using BankSystem.BLL.Interface;
 using BankSystem.BLL.Model;
 using BankSystem.DAL;
@@ -51,7 +52,7 @@ namespace BankSystem.BLL
             }
         }
 
-        public void Debit(string IBANNumber, decimal amount)
+        public AccountModel Debit(string IBANNumber, double amount)
         {
             try
             {
@@ -61,8 +62,24 @@ namespace BankSystem.BLL
                     throw new Exception("Not found an account");
 
                 // TODO: Move hard code to config
-                decimal fee = (amount * Convert.ToDecimal(0.1)) / 100;
+                double fee = (amount * 0.1) / 100;
+                account.Balance += amount - fee;
 
+                account.Transaction.Add(new Transaction
+                {
+                    SenderIBANNumber = IBANNumber,
+                    ReceiverIBANNumber = IBANNumber,
+                    Type = (int)TransactionType.Debit,
+                    Amount = amount,
+                    Fee = fee,
+                    OutStandingBalance = account.Balance,
+                    CreatedDate = DateTime.Now
+                });
+
+
+                _unitOfWork.Commit();
+
+                return _mapper.Map<Account, AccountModel>(account);
             }
             catch (Exception ex)
             {
@@ -74,6 +91,7 @@ namespace BankSystem.BLL
                 _unitOfWork.Dispose();
             }
         }
+
 
         #region Private method
         private string GetIBANNumber()

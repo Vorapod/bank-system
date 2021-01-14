@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace BankSystem.BLL.Enum
 {
-    enum TransactionType
+    public enum TransactionType
     {
-        Deposit = 1,
-        Transfer = 2
+        Debit = 1,
+        Credit = 2
     }
 }
