@@ -1,7 +1,7 @@
+using System.Data.Entity;
+
 namespace BankSystem.DAL
 {
-    using System.Data.Entity;
-
     public partial class BankSystemDbContext : DbContext
     {
         public BankSystemDbContext()
@@ -10,7 +10,6 @@ namespace BankSystem.DAL
         }
 
         public virtual DbSet<Account> Account { get; set; }
-        public virtual DbSet<Customer> Customer { get; set; }
         public virtual DbSet<Transaction> Transaction { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -27,11 +26,6 @@ namespace BankSystem.DAL
                 .HasMany(e => e.Transaction)
                 .WithRequired(e => e.Account)
                 .HasForeignKey(e => e.SenderIBANNumber)
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<Customer>()
-                .HasMany(e => e.Account)
-                .WithRequired(e => e.Customer)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Transaction>()
@@ -51,7 +45,7 @@ namespace BankSystem.DAL
                 .HasPrecision(18, 0);
 
             modelBuilder.Entity<Transaction>()
-                .Property(e => e.Net)
+                .Property(e => e.OutStandingBalance)
                 .HasPrecision(18, 0);
         }
     }

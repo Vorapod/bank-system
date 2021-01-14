@@ -25,7 +25,9 @@ namespace BankSystem.DAL
 
         public decimal Fee { get; set; }
 
-        public decimal Net { get; set; }
+        public decimal OutStandingBalance { get; set; }
+
+        public DateTime CreatedDate { get; set; }
 
         public virtual Account Account { get; set; }
     }
