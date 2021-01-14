@@ -22,5 +22,6 @@ namespace BankSystem.DAL.Interface
         void Delete(int id);
         void Update(TEntity Entity);
         TEntity GetById(int id);
+        TEntity GetById(string id);
     }
 }

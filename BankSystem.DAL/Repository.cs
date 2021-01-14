@@ -66,6 +66,11 @@ namespace BankSystem.DAL
             return _dbSet.Find(id);
         }
 
+        public TEntity GetById(string id)
+        {
+            return _dbSet.Find(id);
+        }
+
         public void Update(TEntity entityToUpdate)
         {
             _dbSet.Attach(entityToUpdate);

@@ -7,6 +7,7 @@ namespace BankSystem.BLL.Interface
     {
         #region [Account]
         AccountModel AddAccount(AccountModel account);
+        void Debit(string IBANNumber, decimal amount);
         #endregion
     }
 }

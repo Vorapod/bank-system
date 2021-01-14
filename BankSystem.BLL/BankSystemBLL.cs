@@ -25,7 +25,7 @@ namespace BankSystem.BLL
             {
                 Account poco = _mapper.Map<AccountModel, Account>(account);
                 
-                //TODO: Get IBANNumber from website with selenium
+                //TODO: Get IBANNumber from website by selenium
                 if(String.IsNullOrEmpty(account.IBANNumber))
                 poco.IBANNumber = GetIBANNumber();
 
@@ -51,6 +51,30 @@ namespace BankSystem.BLL
             }
         }
 
+        public void Debit(string IBANNumber, decimal amount)
+        {
+            try
+            {
+                var account = _unitOfWork.AccountRepository.GetById(IBANNumber);
+
+                if (account == null)
+                    throw new Exception("Not found an account");
+
+                // TODO: Move hard code to config
+                decimal fee = (amount * Convert.ToDecimal(0.1)) / 100;
+
+            }
+            catch (Exception ex)
+            {
+                _unitOfWork.RejectChanges();
+                throw ex;
+            }
+            finally
+            {
+                _unitOfWork.Dispose();
+            }
+        }
+
         #region Private method
         private string GetIBANNumber()
         {
@@ -64,6 +88,8 @@ namespace BankSystem.BLL
             return new string(Enumerable.Repeat(chars, length)
               .Select(s => s[random.Next(s.Length)]).ToArray());
         }
+
+      
         #endregion
 
     }
