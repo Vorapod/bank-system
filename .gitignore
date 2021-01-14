@@ -3,4 +3,3 @@ bin/
 obj/
 *.jfm
 *.dbmld 
-/BankSystem.Database/*.dbmdl

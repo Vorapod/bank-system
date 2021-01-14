@@ -21,18 +21,19 @@ namespace BankSystem.BLL
 
         public AccountModel AddAccount(AccountModel account)
         {
-            throw new NotImplementedException();
-        }
-
-        public CustomerModel AddCustomer(CustomerModel customer)
-        {
             try
             {
-                Customer poco = _mapper.Map<CustomerModel, Customer>(customer);
-                _unitOfWork.CustomerRepository.Add(poco);
+                Account poco = _mapper.Map<AccountModel, Account>(account);
+                
+                //TODO: Get IBANNumber from website with selenium
+                //poco.IBANNumber = GetIBANNumber();
+                poco.CreatedDate = DateTime.Now;
+
+                _unitOfWork.AccountRepository.Add(poco);
                 _unitOfWork.Commit();
-                customer.Id = poco.Id;
-                return customer;
+                account.IBANNumber = poco.IBANNumber;
+
+                return account;
             }
             catch (Exception ex)
             {
@@ -45,67 +46,9 @@ namespace BankSystem.BLL
             }
         }
 
-        public void DeleteAccount(string IBANNumber)
+        private string GetIBANNumber()
         {
-            throw new NotImplementedException();
-        }
-
-        public void DeleteCustomer(int customerId)
-        {
-            throw new NotImplementedException();
-        }
-
-        //public void Deposite(TransferModel transfer)
-        //{
-        //    // Get account by IBANNumber
-        //    var account = new AccountModel();
-
-        //    // Calculate Fee
-        //    double fee = (transfer.Amount * 0.10) / 100;
-        //    double net = transfer.Amount - fee;
-
-        //    // Update balance
-        //    // account.Balance + net
-
-
-
-        //    // InsertTransaction
-        //    //var transaction 
-
-
-
-
-        //}
-
-        public IEnumerable<AccountModel> GetAccounts(int customerId)
-        {
-            // Get account from DAL
-            return new List<AccountModel>();
-        }
-
-        public CustomerModel GetCustomer(int customerId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<CustomerModel> GetCustomers(Dictionary<string, string> filters, Dictionary<string, string> sorting)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<TransactionModel> GetTransactions(string IBANNumber)
-        {
-            throw new NotImplementedException();
-        }
-
-        //public void Transfer(TransferModel transfer)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        public CustomerModel UpdateCustomer(int customerId, CustomerModel customer)
-        {
-            throw new NotImplementedException();
+            return "Random IBANNumber";
         }
     }
 }
