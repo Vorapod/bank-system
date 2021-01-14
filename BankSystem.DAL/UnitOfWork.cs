@@ -13,8 +13,6 @@ namespace BankSystem.DAL
             _dbContext = dbContext;
         }
 
-        public IRepository<Customer> CustomerRepository => new Repository<Customer>(_dbContext);
-
         public IRepository<Account> AccountRepository => new Repository<Account>(_dbContext);
 
         public IRepository<Transaction> TransactionRepository => new Repository<Transaction>(_dbContext);

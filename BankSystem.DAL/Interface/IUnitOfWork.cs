@@ -4,7 +4,6 @@ namespace BankSystem.DAL.Interface
 {
     public interface IUnitOfWork : IDisposable
     {
-        IRepository<Customer> CustomerRepository { get; }
         IRepository<Account> AccountRepository { get; }
         IRepository<Transaction> TransactionRepository { get; }
 
