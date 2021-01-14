@@ -36,10 +36,8 @@ namespace BankSystem.BLL
 
                 _unitOfWork.AccountRepository.Add(poco);
                 _unitOfWork.Commit();
-                account.IBANNumber = poco.IBANNumber;
-                account.CreatedDate = poco.CreatedDate;
 
-                return account;
+                return _mapper.Map<Account, AccountModel>(poco); ;
             }
             catch (Exception ex)
             {
@@ -56,10 +54,7 @@ namespace BankSystem.BLL
         {
             try
             {
-                Account account = _unitOfWork.AccountRepository.GetById(deposit.IBANNumber);
-
-                if (account == null)
-                    throw new Exception("Not found an account.");
+                Account account = GetAccount(deposit.IBANNumber);
 
                 // TODO: Move hard code to config
                 double fee = (deposit.Amount * 0.1) / 100;
@@ -91,13 +86,17 @@ namespace BankSystem.BLL
             }
         }
 
+        
+
         public AccountModel Credit(TransferModel transfer)
         {
             // Get sender's account
-            Account senderAccount = _unitOfWork.AccountRepository.GetById(transfer.SenderIBANNumber);
 
+            Account senderAccount = GetAccount(transfer.SenderIBANNumber);
             if (senderAccount.Balance < transfer.Amount)
                 throw new Exception("The money of sender is not enough.");
+
+            Account receiverAccount = GetAccount(transfer.SenderIBANNumber);
 
 
 
@@ -116,6 +115,16 @@ namespace BankSystem.BLL
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             return new string(Enumerable.Repeat(chars, length)
               .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
+        private Account GetAccount(string iBANNumber)
+        {
+            Account account = _unitOfWork.AccountRepository.GetById(iBANNumber);
+
+            if (account == null)
+                throw new Exception($"Account with IBANNumber {iBANNumber} not found.");
+
+            return account;
         }
         #endregion
 
