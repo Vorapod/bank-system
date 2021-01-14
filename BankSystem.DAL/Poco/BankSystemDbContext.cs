@@ -1,4 +1,7 @@
+using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
+using System.Linq;
 
 namespace BankSystem.DAL
 {
@@ -19,10 +22,6 @@ namespace BankSystem.DAL
                 .IsFixedLength();
 
             modelBuilder.Entity<Account>()
-                .Property(e => e.Balance)
-                .HasPrecision(18, 0);
-
-            modelBuilder.Entity<Account>()
                 .HasMany(e => e.Transaction)
                 .WithRequired(e => e.Account)
                 .HasForeignKey(e => e.SenderIBANNumber)
@@ -35,18 +34,6 @@ namespace BankSystem.DAL
             modelBuilder.Entity<Transaction>()
                 .Property(e => e.ReceiverIBANNumber)
                 .IsFixedLength();
-
-            modelBuilder.Entity<Transaction>()
-                .Property(e => e.Amount)
-                .HasPrecision(18, 0);
-
-            modelBuilder.Entity<Transaction>()
-                .Property(e => e.Fee)
-                .HasPrecision(18, 0);
-
-            modelBuilder.Entity<Transaction>()
-                .Property(e => e.OutStandingBalance)
-                .HasPrecision(18, 0);
         }
     }
 }

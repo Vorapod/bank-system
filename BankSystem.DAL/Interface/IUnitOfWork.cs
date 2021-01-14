@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BankSystem.DAL;
+using System;
 
 namespace BankSystem.DAL.Interface
 {
