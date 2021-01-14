@@ -25,7 +25,7 @@ namespace BankSystem.DAL
 
         public bool IsActive { get; set; }
 
-        public decimal Balance { get; set; }
+        public double Balance { get; set; }
 
         public DateTime CreatedDate { get; set; }
 

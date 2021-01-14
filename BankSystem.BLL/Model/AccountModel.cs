@@ -14,9 +14,9 @@ namespace BankSystem.BLL.Model
         [DataMember]
         public int IsActive { get; set; }
         [DataMember]
-        public decimal Balance { get; set; }
+        public double Balance { get; set; }
         [DataMember]
-        public DateTime? CreatedDate { get; set; }
+        public DateTime CreatedDate { get; set; }
         [DataMember]
         public virtual ICollection<TransactionModel> Transaction { get; set; }
     }

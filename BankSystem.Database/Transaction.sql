@@ -4,9 +4,9 @@
     [SenderIBANNumber] NCHAR(18) NOT NULL, 
     [ReceiverIBANNumber] NCHAR(18) NOT NULL, 
     [Type] INT NOT NULL, 
-    [Amount] DECIMAL(18, 2) NOT NULL DEFAULT 0.00, 
-    [Fee] DECIMAL(18, 2) NOT NULL DEFAULT 0.00, 
-    [OutStandingBalance] DECIMAL(18, 2) NOT NULL DEFAULT 0.00, 
+    [Amount] FLOAT NOT NULL DEFAULT 0.00, 
+    [Fee] FLOAT NOT NULL DEFAULT 0.00, 
+    [OutStandingBalance] FLOAT NOT NULL DEFAULT 0.00, 
     [CreatedDate] DATETIME NOT NULL, 
     CONSTRAINT [FK_Transaction_Account] FOREIGN KEY (SenderIBANNumber) REFERENCES [dbo].[Account](IBANNumber)
 

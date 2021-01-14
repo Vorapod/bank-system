@@ -21,11 +21,11 @@ namespace BankSystem.DAL
 
         public int Type { get; set; }
 
-        public decimal Amount { get; set; }
+        public double Amount { get; set; }
 
-        public decimal Fee { get; set; }
+        public double Fee { get; set; }
 
-        public decimal OutStandingBalance { get; set; }
+        public double OutStandingBalance { get; set; }
 
         public DateTime CreatedDate { get; set; }
 

@@ -55,7 +55,7 @@ namespace BankSystem.BLL
         {
             try
             {
-                var account = _unitOfWork.AccountRepository.GetById(IBANNumber);
+                Account account = _unitOfWork.AccountRepository.GetById(IBANNumber);
 
                 if (account == null)
                     throw new Exception("Not found an account");

@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System;
+using System.Runtime.Serialization;
 
 namespace BankSystem.BLL.Model
 {
@@ -14,13 +15,13 @@ namespace BankSystem.BLL.Model
         [DataMember]
         public int Type { get; set; }
         [DataMember]
-        public decimal Amount { get; set; }
+        public double Amount { get; set; }
         [DataMember]
-        public decimal Fee { get; set; }
+        public double Fee { get; set; }
         [DataMember]
-        public decimal OutStandingBalance { get; set; }
+        public double OutStandingBalance { get; set; }
         [DataMember]
-        public decimal CreatedDate { get; set; }
+        public DateTime CreatedDate { get; set; }
         [DataMember]
         public AccountModel Account { get; set; }
     }
