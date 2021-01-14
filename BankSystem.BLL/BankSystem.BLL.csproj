@@ -51,6 +51,7 @@
     <Compile Include="Model\AccountModel.cs" />
     <Compile Include="Model\DepositModel.cs" />
     <Compile Include="Model\TransactionModel.cs" />
+    <Compile Include="Model\TransferModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -52,30 +52,29 @@ namespace BankSystem.BLL
             }
         }
 
-        public AccountModel Debit(string IBANNumber, double amount)
+        public AccountModel Debit(DepositModel deposit)
         {
             try
             {
-                Account account = _unitOfWork.AccountRepository.GetById(IBANNumber);
+                Account account = _unitOfWork.AccountRepository.GetById(depositModel.IBANNumber);
 
                 if (account == null)
                     throw new Exception("Not found an account");
 
                 // TODO: Move hard code to config
-                double fee = (amount * 0.1) / 100;
-                account.Balance += amount - fee;
+                double fee = (depositModel.Amount * 0.1) / 100;
+                account.Balance += depositModel.Amount - fee;
 
                 account.Transaction.Add(new Transaction
                 {
-                    SenderIBANNumber = IBANNumber,
-                    ReceiverIBANNumber = IBANNumber,
+                    SenderIBANNumber = depositModel.IBANNumber,
+                    ReceiverIBANNumber = depositModel.IBANNumber,
                     Type = (int)TransactionType.Debit,
-                    Amount = amount,
+                    Amount = depositModel.Amount,
                     Fee = fee,
                     OutStandingBalance = account.Balance,
                     CreatedDate = DateTime.Now
                 });
-
 
                 _unitOfWork.Commit();
 
@@ -92,6 +91,10 @@ namespace BankSystem.BLL
             }
         }
 
+        public AccountModel Credit(TransferModel transferModel)
+        {
+            throw new NotImplementedException();
+        }
 
         #region Private method
         private string GetIBANNumber()
@@ -106,8 +109,6 @@ namespace BankSystem.BLL
             return new string(Enumerable.Repeat(chars, length)
               .Select(s => s[random.Next(s.Length)]).ToArray());
         }
-
-      
         #endregion
 
     }
