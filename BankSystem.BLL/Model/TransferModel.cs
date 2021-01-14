@@ -10,6 +10,6 @@ namespace BankSystem.BLL.Model
         [DataMember]
         public string ReceiverIBANNumber { get; set; }
         [DataMember]
-        public decimal Amount { get; set; }
+        public double Amount { get; set; }
     }
 }

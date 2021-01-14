@@ -59,7 +59,7 @@ namespace BankSystem.BLL
                 Account account = _unitOfWork.AccountRepository.GetById(deposit.IBANNumber);
 
                 if (account == null)
-                    throw new Exception("Not found an account");
+                    throw new Exception("Not found an account.");
 
                 // TODO: Move hard code to config
                 double fee = (deposit.Amount * 0.1) / 100;
@@ -91,9 +91,17 @@ namespace BankSystem.BLL
             }
         }
 
-        public AccountModel Credit(TransferModel transferModel)
+        public AccountModel Credit(TransferModel transfer)
         {
-            throw new NotImplementedException();
+            // Get sender's account
+            Account senderAccount = _unitOfWork.AccountRepository.GetById(transfer.SenderIBANNumber);
+
+            if (senderAccount.Balance < transfer.Amount)
+                throw new Exception("The money of sender is not enough.");
+
+
+
+            return new AccountModel();
         }
 
         #region Private method

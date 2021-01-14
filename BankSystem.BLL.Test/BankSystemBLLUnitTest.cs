@@ -35,7 +35,7 @@ namespace BankSystem.BLL.Test
         }
 
         [Test]
-        public void CreateNewAccount_Shoud_Not_Throw_Error_When_CreateSuccess()
+        public void CreateNewAccount_Shoud_Not_Throw_Error_When_Create_Account_Success()
         {
             var expected = new AccountModel
             {
@@ -51,7 +51,7 @@ namespace BankSystem.BLL.Test
 
 
         [Test]
-        public void Debit_Should_Be_Work_Correctly_When_Deposit_1000()
+        public void Debit_Should_Not_Throw_Error_When_Deposit_1000_Success()
         {
             double amountExpected = 1000;
             double feeExpected = 1.00;
@@ -83,14 +83,87 @@ namespace BankSystem.BLL.Test
             Assert.AreEqual((int)TransactionType.Debit, tranasctions[0].Type);
         }
 
-        //[Test]
-        //public void Debug()
-        //{
-        //    BankSystemDbContext db = new BankSystemDbContext();
-        //    UnitOfWork uow = new UnitOfWork(db);
+        [Test]
+        public void Debit_Should_Throw_Error_When_Not_Found_The_Account_From_IBANNumber()
+        {
+            _mockUnitOfWork.Setup(uof => uof.AccountRepository.GetById(It.IsAny<string>()))
+                           .Returns((Account)null);
 
-        //    BankSystemBLL bll = new BankSystemBLL(uow, _mapper);
-        //    var result = bll.Debit("S9SKXSKPKKJPZBXVDU", 1000);
-        //}
+            _bll = new BankSystemBLL(_mockUnitOfWork.Object, _mapper);
+            var ex = Assert.Throws<Exception>(() =>
+            {
+                _bll.Debit(new DepositModel());
+            });
+
+            Assert.That(ex.Message, Is.EqualTo("Not found an account."));
+        }
+
+        [Test]
+        public void Credit_Should_Throw_Error_When_TheMoneyOfSender_Not_Enough()
+        {
+            double balanceABeforeTransfer = 900;
+            string senderIBANNumber = "A";
+            string receiverIBANNumber = "B";
+            double amountExpected = 1000;
+
+            _mockUnitOfWork.Setup(uof => uof.AccountRepository.GetById(It.IsAny<string>()))
+                           .Returns(new Account
+                           {
+                               IBANNumber = senderIBANNumber,
+                               Balance = balanceABeforeTransfer
+                           });
+
+            _bll = new BankSystemBLL(_mockUnitOfWork.Object, _mapper);
+
+            var ex = Assert.Throws<Exception>(() =>
+            {
+                _bll.Credit(new TransferModel
+                {
+                    SenderIBANNumber = senderIBANNumber,
+                    ReceiverIBANNumber = receiverIBANNumber,
+                    Amount = amountExpected
+                });
+             });
+
+            Assert.That(ex.Message, Is.EqualTo("The money of sender is not enough."));
+        }
+
+        [Test]
+        public void Credit_Should_Not_Throw_Error_When_A_Transfer_To_B_With_1000()
+        {
+            double balanceABeforeTransfer = 1000;
+            string senderIBANNumber = "A";
+            string receiverIBANNumber = "B";
+            double amountExpected = 1000;
+
+            _mockUnitOfWork.Setup(uof => uof.AccountRepository.GetById(It.IsAny<string>()))
+                           .Returns(new Account
+                           {
+                               IBANNumber = senderIBANNumber,
+                               Balance = balanceABeforeTransfer
+                           });
+
+            _bll = new BankSystemBLL(_mockUnitOfWork.Object, _mapper);
+
+            var result = _bll.Credit(new TransferModel { 
+                SenderIBANNumber = senderIBANNumber,
+                ReceiverIBANNumber = receiverIBANNumber,
+                Amount = amountExpected
+            });
+            
+        }
+        [Test]
+        public void Debug()
+        {
+            BankSystemDbContext db = new BankSystemDbContext();
+            UnitOfWork uow = new UnitOfWork(db);
+
+            BankSystemBLL bll = new BankSystemBLL(uow, _mapper);
+            //var result = bll.Debit(new DepositModel
+            //{
+            //    IBANNumber = "ABC",
+            //    Amount = 1
+            //});
+        }
     }
 }
