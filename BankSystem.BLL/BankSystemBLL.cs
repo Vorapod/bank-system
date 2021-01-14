@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
 using BankSystem.BLL.Interface;
 using BankSystem.BLL.Model;
-using BankSystem.DAL.Interface;
 using BankSystem.DAL;
+using BankSystem.DAL.Interface;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace BankSystem.BLL
@@ -30,14 +29,14 @@ namespace BankSystem.BLL
                 if(String.IsNullOrEmpty(account.IBANNumber))
                 poco.IBANNumber = GetIBANNumber();
 
-                //TODO: Find the way set defalut value
+                //TODO: Find the way to set defalut value
                 poco.CreatedDate = DateTime.Now;
-                poco.Balance = Convert.ToDecimal(10.50);
                 poco.IsActive = true;
 
                 _unitOfWork.AccountRepository.Add(poco);
                 _unitOfWork.Commit();
                 account.IBANNumber = poco.IBANNumber;
+                account.CreatedDate = poco.CreatedDate;
 
                 return account;
             }
