@@ -49,6 +49,7 @@
     <Compile Include="Enum\TransactionType.cs" />
     <Compile Include="Interface\IBankSystemBLL.cs" />
     <Compile Include="Model\AccountModel.cs" />
+    <Compile Include="Model\DepositModel.cs" />
     <Compile Include="Model\TransactionModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

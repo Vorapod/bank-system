@@ -2,12 +2,7 @@
 using BankSystem.BLL;
 using BankSystem.BLL.Model;
 using BankSystem.DAL;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Http;
-using System.Web.Mvc;
 
 namespace BankSystem.API.Controllers
 {
@@ -16,13 +11,13 @@ namespace BankSystem.API.Controllers
         private readonly BankSystemBLL _bll;
         public AccountsController()
         {
-            //TODO: Move to DI
+            //TODO: Implement DI later
             BankSystemDbContext db = new BankSystemDbContext();
             UnitOfWork uow = new UnitOfWork(db);
             MapperConfiguration mp = new MapperConfiguration(config =>
             {
                 config.CreateMap<AccountModel, Account>().ReverseMap();
-
+                config.CreateMap<TransactionModel, Transaction>().ReverseMap();
             });
 
             var mapper = new Mapper(mp);
@@ -31,10 +26,19 @@ namespace BankSystem.API.Controllers
             _bll = bll;
         }
 
-        // POST api/accounts
-        public AccountModel Post([FromBody] AccountModel account)
+        // POST api/accounts/new
+        [HttpPost]
+        public AccountModel New([FromBody] AccountModel account)
         {
             var result = _bll.AddAccount(account);
+            return result;
+        }
+
+        // POST api/accounts/deposit
+        [HttpPost]
+        public AccountModel Deposit([FromBody] DepositModel deposit)
+        {
+            var result = _bll.Debit(deposit.IBANNumber, deposit.Amount);
             return result;
         }
 

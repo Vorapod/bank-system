@@ -22,7 +22,6 @@ namespace BankSystem.BLL.Model
         public double OutStandingBalance { get; set; }
         [DataMember]
         public DateTime CreatedDate { get; set; }
-        [DataMember]
-        public AccountModel Account { get; set; }
+        
     }
 }
