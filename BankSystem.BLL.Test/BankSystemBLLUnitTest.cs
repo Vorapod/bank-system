@@ -67,9 +67,7 @@ namespace BankSystem.BLL.Test
 
             _bll = new BankSystemBLL(_mockUnitOfWork.Object, _mapper);
 
-            string IBANNumber = "123456";
-            double amount = 1000;
-            var result = _bll.Debit(IBANNumber, amount);
+            var result = _bll.Debit(new DepositModel { IBANNumber = ibanNumberExpected, Amount = amountExpected });
             List<TransactionModel> tranasctions = result.Transaction.ToList();
 
             // Assert Account

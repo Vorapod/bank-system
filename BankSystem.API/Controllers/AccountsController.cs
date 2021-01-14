@@ -38,7 +38,7 @@ namespace BankSystem.API.Controllers
         [HttpPost]
         public AccountModel Deposit([FromBody] DepositModel deposit)
         {
-            var result = _bll.Debit(deposit.IBANNumber, deposit.Amount);
+            var result = _bll.Debit(deposit);
             return result;
         }
 

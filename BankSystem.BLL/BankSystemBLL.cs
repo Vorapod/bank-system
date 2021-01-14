@@ -56,21 +56,21 @@ namespace BankSystem.BLL
         {
             try
             {
-                Account account = _unitOfWork.AccountRepository.GetById(depositModel.IBANNumber);
+                Account account = _unitOfWork.AccountRepository.GetById(deposit.IBANNumber);
 
                 if (account == null)
                     throw new Exception("Not found an account");
 
                 // TODO: Move hard code to config
-                double fee = (depositModel.Amount * 0.1) / 100;
-                account.Balance += depositModel.Amount - fee;
+                double fee = (deposit.Amount * 0.1) / 100;
+                account.Balance += deposit.Amount - fee;
 
                 account.Transaction.Add(new Transaction
                 {
-                    SenderIBANNumber = depositModel.IBANNumber,
-                    ReceiverIBANNumber = depositModel.IBANNumber,
+                    SenderIBANNumber = deposit.IBANNumber,
+                    ReceiverIBANNumber = deposit.IBANNumber,
                     Type = (int)TransactionType.Debit,
-                    Amount = depositModel.Amount,
+                    Amount = deposit.Amount,
                     Fee = fee,
                     OutStandingBalance = account.Balance,
                     CreatedDate = DateTime.Now
