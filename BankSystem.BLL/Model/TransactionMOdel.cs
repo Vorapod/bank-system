@@ -18,7 +18,9 @@ namespace BankSystem.BLL.Model
         [DataMember]
         public decimal Fee { get; set; }
         [DataMember]
-        public decimal Net { get; set; }
+        public decimal OutStandingBalance { get; set; }
+        [DataMember]
+        public decimal CreatedDate { get; set; }
         [DataMember]
         public AccountModel Account { get; set; }
     }

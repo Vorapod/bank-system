@@ -10,8 +10,6 @@ namespace BankSystem.BLL.Model
         [DataMember]
         public string IBANNumber { get; set; }
         [DataMember]
-        public int CustomerId { get; set; }
-        [DataMember]
         public string Name { get; set; }
         [DataMember]
         public int IsActive { get; set; }
@@ -19,8 +17,6 @@ namespace BankSystem.BLL.Model
         public decimal Balance { get; set; }
         [DataMember]
         public DateTime? CreatedDate { get; set; }
-        [DataMember]
-        public CustomerModel Customer { get; set; }
         [DataMember]
         public virtual ICollection<TransactionModel> Transaction { get; set; }
     }
