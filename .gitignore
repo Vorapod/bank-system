@@ -1,5 +1,6 @@
 /.vs
-/BankSystem.Database/bin
-/BankSystem.Database/obj
 \bin**
 \obj
+*.jfm
+*.dbmld 
+/BankSystem.Database/*.dbmdl

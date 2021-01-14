@@ -59,7 +59,6 @@
     <Folder Include="Properties" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="Customer.sql" />
     <Build Include="Account.sql" />
     <Build Include="Transaction.sql" />
   </ItemGroup>
