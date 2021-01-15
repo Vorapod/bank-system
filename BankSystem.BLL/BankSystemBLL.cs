@@ -5,6 +5,7 @@ using BankSystem.BLL.Model;
 using BankSystem.DAL;
 using BankSystem.DAL.Interface;
 using System;
+using System.Data;
 using System.Linq;
 
 namespace BankSystem.BLL
@@ -156,7 +157,7 @@ namespace BankSystem.BLL
             Account account = _unitOfWork.AccountRepository.GetById(iBANNumber);
 
             if (account == null)
-                throw new Exception($"Account with IBANNumber {iBANNumber} not found.");
+                throw new ObjectNotFoundException($"Account with IBANNumber {iBANNumber} not found.");
 
             return account;
         }

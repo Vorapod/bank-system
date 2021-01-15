@@ -8,6 +8,7 @@ using Moq;
 using System.Linq;
 using System.Collections.Generic;
 using BankSystem.BLL.Enum;
+using System.Data;
 
 namespace BankSystem.BLL.Test
 {
@@ -28,6 +29,7 @@ namespace BankSystem.BLL.Test
 
             _mockUnitOfWork = new Mock<IUnitOfWork>();
             _mockUnitOfWork.Setup(uof => uof.AccountRepository.Add(It.IsAny<Account>()));
+            _mockUnitOfWork.Setup(uof => uof.TransactionRepository.Add(It.IsAny<Transaction>()));
             _mockUnitOfWork.Setup(uof => uof.Commit());
             _mapper = new Mapper(mapperConfig);
 
@@ -91,7 +93,7 @@ namespace BankSystem.BLL.Test
 
             _bll = new BankSystemBLL(_mockUnitOfWork.Object, _mapper);
 
-            var ex = Assert.Throws<Exception>(() =>
+            var ex = Assert.Throws<ObjectNotFoundException>(() =>
             {
                 _bll.Debit(new DepositModel { IBANNumber = ibanNumber });
             });
@@ -134,7 +136,7 @@ namespace BankSystem.BLL.Test
                            .Returns((Account)null);
             _bll = new BankSystemBLL(_mockUnitOfWork.Object, _mapper);
 
-            var ex = Assert.Throws<Exception>(() =>
+            var ex = Assert.Throws<ObjectNotFoundException>(() =>
             {
                 _bll.Credit(new TransferModel
                 {
@@ -161,7 +163,7 @@ namespace BankSystem.BLL.Test
 
             _bll = new BankSystemBLL(_mockUnitOfWork.Object, _mapper);
 
-            var ex = Assert.Throws<Exception>(() =>
+            var ex = Assert.Throws<ObjectNotFoundException>(() =>
             {
                 _bll.Credit(new TransferModel
                 {
@@ -205,18 +207,8 @@ namespace BankSystem.BLL.Test
                 Amount = amountExpected
             });
 
-            List<TransactionModel> tranasctions = result.Transaction.ToList();
-
             // Assert Account
             Assert.AreEqual(senderBalanceAfterTransfer, result.Balance);
-            Assert.AreEqual(1, result.Transaction.Count);
-            // Assert Transaction
-            Assert.AreEqual(amountExpected, tranasctions[0].Amount);
-            Assert.AreEqual(0, tranasctions[0].Fee);
-            Assert.AreEqual(senderBalanceAfterTransfer, tranasctions[0].OutStandingBalance);
-            Assert.AreEqual(senderIBANNumber, tranasctions[0].SenderIBANNumber);
-            Assert.AreEqual(receiverIBANNumber, tranasctions[0].ReceiverIBANNumber);
-            Assert.AreEqual((int)TransactionType.Credit, tranasctions[0].Type);
         }
         [Test]
         public void Debug()
@@ -225,12 +217,12 @@ namespace BankSystem.BLL.Test
             UnitOfWork uow = new UnitOfWork(db);
 
             BankSystemBLL bll = new BankSystemBLL(uow, _mapper);
-            var result = bll.Credit(new TransferModel
-            {
-                SenderIBANNumber = "NL19ABNA4521202713",
-                ReceiverIBANNumber = "NL55INGB3659950165",
-                Amount = 10
-            });
+            //var result = bll.Credit(new TransferModel
+            //{
+            //    SenderIBANNumber = "NL19ABNA4521202713",
+            //    ReceiverIBANNumber = "NL55INGB3659950165",
+            //    Amount = 10
+            //});
         }
     }
 }
