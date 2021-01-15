@@ -53,7 +53,7 @@ namespace BankSystem.BLL.Test
 
 
         [Test]
-        public void Debit_Should_Not_Throw_Error_When_Deposit_1000_Success()
+        public void Debit_Should_Not_Throw_Exception_When_Deposit_1000_Success()
         {
             double amountExpected = 1000;
             double feeExpected = 1.00;
@@ -68,7 +68,7 @@ namespace BankSystem.BLL.Test
                            });
             _bll = new BankSystemBLL(_mockUnitOfWork.Object, _mapper);
 
-            var result = _bll.Deposit(new DepositModel { IBANNumber = ibanNumberExpected, Amount = amountExpected });
+            var result = _bll.Deposit(ibanNumberExpected, new DepositModel { Amount = amountExpected });
             List<TransactionModel> tranasctions = result.Transactions.ToList();
 
             // Assert Account
@@ -83,7 +83,7 @@ namespace BankSystem.BLL.Test
         }
 
         [Test]
-        public void Debit_Should_Throw_Error_When_Not_Found_The_Account_From_IBANNumber()
+        public void Debit_Should_Throw_ObjectNotFoundException_When_Not_Found_The_Account_From_IBANNumber()
         {
             string ibanNumber = "123";
 
@@ -94,14 +94,14 @@ namespace BankSystem.BLL.Test
 
             var ex = Assert.Throws<ObjectNotFoundException>(() =>
             {
-                _bll.Deposit(new DepositModel { IBANNumber = ibanNumber });
+                _bll.Deposit(ibanNumber, new DepositModel());
             });
 
             Assert.That(ex.Message, Is.EqualTo($"Account with IBANNumber {ibanNumber} not found."));
         }
 
         [Test]
-        public void Credit_Should_Throw_Error_When_TheMoneyOfSender_Not_Enough()
+        public void Credit_Should_Throw_ObjectNotFoundException_When_TheMoneyOfSender_Not_Enough()
         {
             double balanceSenderBeforeTransfer = 900;
             double amountExpected = 1000;
@@ -128,7 +128,7 @@ namespace BankSystem.BLL.Test
         }
 
         [Test]
-        public void Credit_Should_Throw_Error_When_NotFound_Sender_Account()
+        public void Credit_Should_Throw_ObjectNotFoundException_When_NotFound_Sender_Account()
         {
             string senderIBANNumber = "123";
             _mockUnitOfWork.Setup(uof => uof.AccountRepository.GetById(It.IsAny<string>()))
@@ -149,7 +149,7 @@ namespace BankSystem.BLL.Test
         }
 
         [Test]
-        public void Credit_Should_Throw_Error_When_NotFound_Receiver_Account()
+        public void Credit_Should_Throw_ObjectNotFoundException_When_NotFound_Receiver_Account()
         {
             string receiverIBANNumber = "123";
             _mockUnitOfWork.SetupSequence(uof => uof.AccountRepository.GetById(It.IsAny<string>()))
@@ -218,6 +218,51 @@ namespace BankSystem.BLL.Test
             Assert.AreEqual(0, tranasctions[0].Fee);
             Assert.AreEqual(senderBalanceAfterTransfer, tranasctions[0].OutStandingBalance);
         }
+
+        [Test]
+        public void GetAccount_Should_Throw_ArgumentNullException_When_IBANNumber_IsNullOrEmpty()
+        {
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                AccountModel result = _bll.GetAccountById(string.Empty);
+            });
+        }
+
+        [Test]
+        public void GetAccount_Should_Throw_ObjectNotFoundException_When_NotFound_Any_Account()
+        {
+            string mockIBANNUmber = "123";
+            _mockUnitOfWork.Setup(uof => uof.AccountRepository.GetById(It.IsAny<string>()))
+                           .Returns((Account)null);
+
+            var ex = Assert.Throws<ObjectNotFoundException>(() =>
+            {
+                _bll.GetAccountById(mockIBANNUmber);
+            });
+
+            Assert.That(ex.Message, Is.EqualTo($"Account with IBANNumber {mockIBANNUmber} not found."));
+        }
+
+        [Test]
+        public void GetAccount_Should_Not_Throw_Error_When_Get_Account_Completed()
+        {
+            string iIBANNumberExpected = "mockIBANNumber";
+            double currentBalanceExpected = 999.99;
+            _mockUnitOfWork.Setup(uof => uof.AccountRepository.GetById(It.IsAny<string>()))
+                           .Returns(new Account
+                           {
+                               IBANNumber = iIBANNumberExpected,
+                               CurrentBalance = currentBalanceExpected
+                           });
+            _bll = new BankSystemBLL(_mockUnitOfWork.Object, _mapper);
+
+            AccountModel result = _bll.GetAccountById(iIBANNumberExpected);
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(iIBANNumberExpected, result.IBANNumber);
+            Assert.AreEqual(currentBalanceExpected, result.CurrentBalance);
+        }
+
         [Test]
         public void Debug()
         {
