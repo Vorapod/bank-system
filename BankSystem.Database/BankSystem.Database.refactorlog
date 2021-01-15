@@ -35,4 +35,18 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="OutStandingBalance" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="fbb52934-0ee0-4f13-bc13-e016694801e5" ChangeDateTime="01/15/2021 07:35:52">
+    <Property Name="ElementName" Value="[dbo].[Transaction].[SenderIBANNumber]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Transaction]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="IBANNumber" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="722d2a90-b399-42e3-a391-e6068f37d5fc" ChangeDateTime="01/15/2021 07:46:47">
+    <Property Name="ElementName" Value="[dbo].[Account].[Balance]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Account]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CurrentBalance" />
+  </Operation>
 </Operations>

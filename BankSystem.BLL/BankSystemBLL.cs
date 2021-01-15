@@ -5,6 +5,7 @@ using BankSystem.BLL.Model;
 using BankSystem.DAL;
 using BankSystem.DAL.Interface;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 
@@ -51,7 +52,7 @@ namespace BankSystem.BLL
             }
         }
 
-        public AccountModel Debit(DepositModel deposit)
+        public AccountModel Deposit(DepositModel deposit)
         {
             try
             {
@@ -59,16 +60,15 @@ namespace BankSystem.BLL
 
                 // TODO: Move hard code to config
                 double fee = (deposit.Amount * 0.1) / 100;
-                account.Balance += deposit.Amount - fee;
+                account.CurrentBalance += deposit.Amount - fee;
 
-                account.Transaction.Add(new Transaction
+                account.Transactions.Add(new Transaction
                 {
-                    SenderIBANNumber = deposit.IBANNumber,
-                    ReceiverIBANNumber = deposit.IBANNumber,
-                    Type = (int)TransactionType.Debit,
+                    Type = (int)TransactionType.Deposit,
+                    StatementType = (int)TransactionType.Deposit,
                     Amount = deposit.Amount,
                     Fee = fee,
-                    OutStandingBalance = account.Balance,
+                    OutStandingBalance = account.CurrentBalance,
                     CreatedDate = DateTime.Now
                 });
 
@@ -87,39 +87,42 @@ namespace BankSystem.BLL
             }
         }
 
-        public AccountModel Credit(TransferModel transfer)
+        public AccountModel Transfer(TransferModel transfer)
         {
             try
             {
                 // Get sender's account
                 Account sender = GetAccount(transfer.SenderIBANNumber);
-                if (sender.Balance < transfer.Amount)
+                if (sender.CurrentBalance < transfer.Amount)
                     throw new Exception("The money of sender is not enough.");
+                // Get receiver's account
+                Account receiver = GetAccount(transfer.ReceiverIBANNumber);
 
                 // Sender Transaction
-                sender.Balance -= transfer.Amount;
-                _unitOfWork.TransactionRepository.Add(new Transaction
+                sender.CurrentBalance -= transfer.Amount;
+                sender.Transactions.Add(new Transaction
                 {
-                    SenderIBANNumber = transfer.SenderIBANNumber,
-                    ReceiverIBANNumber = transfer.ReceiverIBANNumber,
-                    Type = (int)TransactionType.Credit,
-                    Amount = transfer.Amount,
+                    IBANNumber = transfer.SenderIBANNumber,
+                    Type = (int)TransactionType.Transfer,
+                    StatementType = (int)Enum.StatementType.Credit,
+                    Amount = transfer.Amount * -1,
                     Fee = 0,
-                    OutStandingBalance = sender.Balance,
+                    OutStandingBalance = sender.CurrentBalance,
+                    PartnerIBANNuberRef = transfer.ReceiverIBANNumber,
                     CreatedDate = DateTime.Now
                 });
 
-                // Receiver Transactin
-                Account receiver = GetAccount(transfer.ReceiverIBANNumber);
-                receiver.Balance += transfer.Amount;
-                _unitOfWork.TransactionRepository.Add(new Transaction
+                // Receiver Transaction
+                receiver.CurrentBalance += transfer.Amount;
+                receiver.Transactions.Add(new Transaction
                 {
-                    SenderIBANNumber = transfer.SenderIBANNumber,
-                    ReceiverIBANNumber = transfer.ReceiverIBANNumber,
-                    Type = (int)TransactionType.Debit,
+                    IBANNumber = transfer.ReceiverIBANNumber,
+                    Type = (int)TransactionType.Transfer,
+                    StatementType = (int)Enum.StatementType.Debit,
                     Amount = transfer.Amount,
                     Fee = 0,
-                    OutStandingBalance = receiver.Balance,
+                    OutStandingBalance = receiver.CurrentBalance,
+                    PartnerIBANNuberRef = transfer.SenderIBANNumber,
                     CreatedDate = DateTime.Now
                 });
 
@@ -136,6 +139,11 @@ namespace BankSystem.BLL
             {
                 _unitOfWork.Dispose();
             }
+        }
+
+        public List<AccountModel> GetAccounts()
+        {
+            return new List<AccountModel>();
         }
 
         #region Private method

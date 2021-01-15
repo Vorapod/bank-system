@@ -14,10 +14,10 @@ namespace BankSystem.BLL.Model
         [DataMember]
         public int IsActive { get; set; }
         [DataMember]
-        public double Balance { get; set; }
+        public double CurrentBalance { get; set; }
         [DataMember]
         public DateTime CreatedDate { get; set; }
         [DataMember]
-        public virtual ICollection<TransactionModel> Transaction { get; set; }
+        public virtual ICollection<TransactionModel> Transactions { get; set; }
     }
 }

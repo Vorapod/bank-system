@@ -64,23 +64,22 @@ namespace BankSystem.BLL.Test
                            .Returns(new Account
                            {
                                IBANNumber = ibanNumberExpected,
-                               Balance = 0
+                               CurrentBalance = 0
                            });
             _bll = new BankSystemBLL(_mockUnitOfWork.Object, _mapper);
 
-            var result = _bll.Debit(new DepositModel { IBANNumber = ibanNumberExpected, Amount = amountExpected });
-            List<TransactionModel> tranasctions = result.Transaction.ToList();
+            var result = _bll.Deposit(new DepositModel { IBANNumber = ibanNumberExpected, Amount = amountExpected });
+            List<TransactionModel> tranasctions = result.Transactions.ToList();
 
             // Assert Account
-            Assert.AreEqual(balanceExpected, result.Balance);
-            Assert.AreEqual(1, result.Transaction.Count);
+            Assert.AreEqual(balanceExpected, result.CurrentBalance);
+            Assert.AreEqual(1, result.Transactions.Count);
             // Assert Transaction
             Assert.AreEqual(amountExpected, tranasctions[0].Amount);
             Assert.AreEqual(feeExpected, tranasctions[0].Fee);
             Assert.AreEqual(balanceExpected, tranasctions[0].OutStandingBalance);
-            Assert.AreEqual(ibanNumberExpected, tranasctions[0].SenderIBANNumber);
-            Assert.AreEqual(ibanNumberExpected, tranasctions[0].ReceiverIBANNumber);
-            Assert.AreEqual((int)TransactionType.Debit, tranasctions[0].Type);
+            Assert.AreEqual((int)TransactionType.Deposit, tranasctions[0].Type);
+            Assert.AreEqual((int)Enum.StatementType.Debit, tranasctions[0].StatementType);
         }
 
         [Test]
@@ -95,7 +94,7 @@ namespace BankSystem.BLL.Test
 
             var ex = Assert.Throws<ObjectNotFoundException>(() =>
             {
-                _bll.Debit(new DepositModel { IBANNumber = ibanNumber });
+                _bll.Deposit(new DepositModel { IBANNumber = ibanNumber });
             });
 
             Assert.That(ex.Message, Is.EqualTo($"Account with IBANNumber {ibanNumber} not found."));
@@ -111,13 +110,13 @@ namespace BankSystem.BLL.Test
                            .Returns(new Account
                            {
                                IBANNumber = "A",
-                               Balance = balanceSenderBeforeTransfer
+                               CurrentBalance = balanceSenderBeforeTransfer
                            });
             _bll = new BankSystemBLL(_mockUnitOfWork.Object, _mapper);
 
             var ex = Assert.Throws<Exception>(() =>
             {
-                _bll.Credit(new TransferModel
+                _bll.Transfer(new TransferModel
                 {
                     SenderIBANNumber = "A",
                     ReceiverIBANNumber = "B",
@@ -138,7 +137,7 @@ namespace BankSystem.BLL.Test
 
             var ex = Assert.Throws<ObjectNotFoundException>(() =>
             {
-                _bll.Credit(new TransferModel
+                _bll.Transfer(new TransferModel
                 {
                     SenderIBANNumber = senderIBANNumber,
                     ReceiverIBANNumber = "B",
@@ -157,7 +156,7 @@ namespace BankSystem.BLL.Test
                            .Returns(new Account
                            {
                                IBANNumber = "A",
-                               Balance = 1000
+                               CurrentBalance = 1000
                            })
                            .Returns((Account)null);
 
@@ -165,7 +164,7 @@ namespace BankSystem.BLL.Test
 
             var ex = Assert.Throws<ObjectNotFoundException>(() =>
             {
-                _bll.Credit(new TransferModel
+                _bll.Transfer(new TransferModel
                 {
                     SenderIBANNumber = "SenderIBANNumber",
                     ReceiverIBANNumber = receiverIBANNumber,
@@ -190,25 +189,34 @@ namespace BankSystem.BLL.Test
                            .Returns(new Account
                            {
                                IBANNumber = senderIBANNumber,
-                               Balance = senderBalanceBeforeTransfer
+                               CurrentBalance = senderBalanceBeforeTransfer
                            })
                            .Returns(new Account
                            {
                                IBANNumber = receiverIBANNumber,
-                               Balance = recriverBalanceBeforeTransfer
+                               CurrentBalance = recriverBalanceBeforeTransfer
                            });
 
             _bll = new BankSystemBLL(_mockUnitOfWork.Object, _mapper);
 
-            var result = _bll.Credit(new TransferModel
+            var result = _bll.Transfer(new TransferModel
             {
                 SenderIBANNumber = senderIBANNumber,
                 ReceiverIBANNumber = receiverIBANNumber,
                 Amount = amountExpected
             });
 
+            List<TransactionModel> tranasctions = result.Transactions.ToList();
+
             // Assert Account
-            Assert.AreEqual(senderBalanceAfterTransfer, result.Balance);
+            Assert.AreEqual(senderBalanceAfterTransfer, result.CurrentBalance);
+            Assert.AreEqual(1, result.Transactions.Count);
+            // Assert Transaction
+            Assert.AreEqual((int)TransactionType.Transfer, tranasctions[0].Type);
+            Assert.AreEqual((int)Enum.StatementType.Credit, tranasctions[0].StatementType);
+            Assert.AreEqual(amountExpected * -1, tranasctions[0].Amount);
+            Assert.AreEqual(0, tranasctions[0].Fee);
+            Assert.AreEqual(senderBalanceAfterTransfer, tranasctions[0].OutStandingBalance);
         }
         [Test]
         public void Debug()

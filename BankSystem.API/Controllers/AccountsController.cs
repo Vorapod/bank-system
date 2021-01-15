@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BankSystem.BLL;
+using BankSystem.BLL.Interface;
 using BankSystem.BLL.Model;
 using BankSystem.DAL;
 using System.Web.Http;
@@ -38,7 +39,7 @@ namespace BankSystem.API.Controllers
         [HttpPost]
         public AccountModel Deposit([FromBody] DepositModel deposit)
         {
-            var result = _bll.Debit(deposit);
+            var result = _bll.Deposit(deposit);
             return result;
         }
 
@@ -46,7 +47,7 @@ namespace BankSystem.API.Controllers
         [HttpPost]
         public AccountModel Transfer([FromBody] TransferModel transfer)
         {
-            var result = _bll.Credit(transfer);
+            var result = _bll.Transfer(transfer);
             return result;
         }
     }

@@ -13,13 +13,11 @@ namespace BankSystem.DAL
 
         [Required]
         [StringLength(18)]
-        public string SenderIBANNumber { get; set; }
-
-        [Required]
-        [StringLength(18)]
-        public string ReceiverIBANNumber { get; set; }
+        public string IBANNumber { get; set; }
 
         public int Type { get; set; }
+
+        public int StatementType { get; set; }
 
         public double Amount { get; set; }
 
@@ -28,6 +26,9 @@ namespace BankSystem.DAL
         public double OutStandingBalance { get; set; }
 
         public DateTime CreatedDate { get; set; }
+
+        [StringLength(18)]
+        public string PartnerIBANNuberRef { get; set; }
 
         public virtual Account Account { get; set; }
     }

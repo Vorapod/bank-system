@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BankSystemBLL.cs" />
+    <Compile Include="Enum\StatementType.cs" />
     <Compile Include="Enum\TransactionType.cs" />
     <Compile Include="Interface\IBankSystemBLL.cs" />
     <Compile Include="Model\AccountModel.cs" />

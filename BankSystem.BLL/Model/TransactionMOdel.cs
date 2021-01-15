@@ -9,11 +9,11 @@ namespace BankSystem.BLL.Model
         [DataMember]
         public int Id { get; set; }
         [DataMember]
-        public string SenderIBANNumber { get; set; }
-        [DataMember]
-        public string ReceiverIBANNumber { get; set; }
+        public string IBANNumber { get; set; }
         [DataMember]
         public int Type { get; set; }
+        [DataMember]
+        public int StatementType { get; set; }
         [DataMember]
         public double Amount { get; set; }
         [DataMember]
@@ -22,6 +22,8 @@ namespace BankSystem.BLL.Model
         public double OutStandingBalance { get; set; }
         [DataMember]
         public DateTime CreatedDate { get; set; }
-        
+        [DataMember]
+        public string PartnerIBANNuberRef { get; set; }
+
     }
 }

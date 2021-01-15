@@ -12,8 +12,8 @@ namespace BankSystem.DAL
         {
         }
 
-        public virtual DbSet<Account> Account { get; set; }
-        public virtual DbSet<Transaction> Transaction { get; set; }
+        public virtual DbSet<Account> Accounts { get; set; }
+        public virtual DbSet<Transaction> Transactions { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -22,17 +22,16 @@ namespace BankSystem.DAL
                 .IsFixedLength();
 
             modelBuilder.Entity<Account>()
-                .HasMany(e => e.Transaction)
+                .HasMany(e => e.Transactions)
                 .WithRequired(e => e.Account)
-                .HasForeignKey(e => e.SenderIBANNumber)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Transaction>()
-                .Property(e => e.SenderIBANNumber)
+                .Property(e => e.IBANNumber)
                 .IsFixedLength();
 
             modelBuilder.Entity<Transaction>()
-                .Property(e => e.ReceiverIBANNumber)
+                .Property(e => e.PartnerIBANNuberRef)
                 .IsFixedLength();
         }
     }

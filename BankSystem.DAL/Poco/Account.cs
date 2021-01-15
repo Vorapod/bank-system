@@ -12,7 +12,7 @@ namespace BankSystem.DAL
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Account()
         {
-            Transaction = new HashSet<Transaction>();
+            Transactions = new HashSet<Transaction>();
         }
 
         [Key]
@@ -25,11 +25,11 @@ namespace BankSystem.DAL
 
         public bool IsActive { get; set; }
 
-        public double Balance { get; set; }
+        public double CurrentBalance { get; set; }
 
         public DateTime CreatedDate { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Transaction> Transaction { get; set; }
+        public virtual ICollection<Transaction> Transactions { get; set; }
     }
 }
