@@ -86,44 +86,39 @@ namespace BankSystem.BLL
             }
         }
 
-
-
         public AccountModel Credit(TransferModel transfer)
         {
             try
             {
-                string senderIBAN = transfer.SenderIBANNumber;
-                string receiverIBAN = transfer.ReceiverIBANNumber;
                 // Get sender's account
                 Account sender = GetAccount(transfer.SenderIBANNumber);
                 if (sender.Balance < transfer.Amount)
                     throw new Exception("The money of sender is not enough.");
 
-                // Receiver Transactin
-                Account receiver = GetAccount(transfer.ReceiverIBANNumber);
-                receiver.Balance += transfer.Amount;
-                receiver.Transaction.Add(new Transaction
-                {
-                    SenderIBANNumber = senderIBAN,
-                    ReceiverIBANNumber = receiverIBAN,
-                    Type = (int)TransactionType.Credit,
-                    Amount = transfer.Amount,
-                    Fee = 0,
-                    OutStandingBalance = receiver.Balance,
-                    CreatedDate = DateTime.Now
-                });
-                _unitOfWork.Commit();
-
                 // Sender Transaction
                 sender.Balance -= transfer.Amount;
-                sender.Transaction.Add(new Transaction
+                _unitOfWork.TransactionRepository.Add(new Transaction
                 {
-                    SenderIBANNumber = senderIBAN,
-                    ReceiverIBANNumber = receiverIBAN,
+                    SenderIBANNumber = transfer.SenderIBANNumber,
+                    ReceiverIBANNumber = transfer.ReceiverIBANNumber,
                     Type = (int)TransactionType.Credit,
                     Amount = transfer.Amount,
                     Fee = 0,
                     OutStandingBalance = sender.Balance,
+                    CreatedDate = DateTime.Now
+                });
+
+                // Receiver Transactin
+                Account receiver = GetAccount(transfer.ReceiverIBANNumber);
+                receiver.Balance += transfer.Amount;
+                _unitOfWork.TransactionRepository.Add(new Transaction
+                {
+                    SenderIBANNumber = transfer.SenderIBANNumber,
+                    ReceiverIBANNumber = transfer.ReceiverIBANNumber,
+                    Type = (int)TransactionType.Debit,
+                    Amount = transfer.Amount,
+                    Fee = 0,
+                    OutStandingBalance = receiver.Balance,
                     CreatedDate = DateTime.Now
                 });
 
