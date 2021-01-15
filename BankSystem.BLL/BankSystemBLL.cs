@@ -52,11 +52,11 @@ namespace BankSystem.BLL
             }
         }
 
-        public AccountModel Deposit(DepositModel deposit)
+        public AccountModel Deposit(string iBANNumber, DepositModel deposit)
         {
             try
             {
-                Account account = GetAccount(deposit.IBANNumber);
+                Account account = GetAccount(iBANNumber);
 
                 // TODO: Move hard code to config
                 double fee = (deposit.Amount * 0.1) / 100;
@@ -141,9 +141,26 @@ namespace BankSystem.BLL
             }
         }
 
-        public List<AccountModel> GetAccounts()
+        public AccountModel GetAccountById(string iBANNumber)
         {
-            return new List<AccountModel>();
+            try
+            {
+                if (iBANNumber == default(string))
+                {
+                    throw new ArgumentNullException("IBANNumber is null.");
+                }
+
+                return _mapper.Map<Account, AccountModel>(GetAccount(iBANNumber));
+            }
+            catch (Exception ex)
+            {
+                _unitOfWork.RejectChanges();
+                throw ex;
+            }
+            finally
+            {
+                _unitOfWork.Dispose();
+            }
         }
 
         #region Private method

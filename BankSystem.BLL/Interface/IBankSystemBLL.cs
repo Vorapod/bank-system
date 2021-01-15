@@ -6,9 +6,8 @@ namespace BankSystem.BLL.Interface
     public interface IBankSystemBLL
     {
         AccountModel AddAccount(AccountModel account);
-        AccountModel Deposit(DepositModel deposit);
+        AccountModel Deposit(string iBANNumber, DepositModel deposit);
         AccountModel Transfer(TransferModel transfer);
-
-        List<AccountModel> GetAccounts();
+        AccountModel GetAccountById(string iBANNumber);
     }
 }
