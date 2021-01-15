@@ -262,20 +262,5 @@ namespace BankSystem.BLL.Test
             Assert.AreEqual(iIBANNumberExpected, result.IBANNumber);
             Assert.AreEqual(currentBalanceExpected, result.CurrentBalance);
         }
-
-        [Test]
-        public void Debug()
-        {
-            BankSystemDbContext db = new BankSystemDbContext();
-            UnitOfWork uow = new UnitOfWork(db);
-
-            BankSystemBLL bll = new BankSystemBLL(uow, _mapper);
-            //var result = bll.Credit(new TransferModel
-            //{
-            //    SenderIBANNumber = "NL19ABNA4521202713",
-            //    ReceiverIBANNumber = "NL55INGB3659950165",
-            //    Amount = 10
-            //});
-        }
     }
 }
