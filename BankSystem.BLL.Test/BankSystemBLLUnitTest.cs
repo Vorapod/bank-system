@@ -175,9 +175,10 @@ namespace BankSystem.BLL.Test
         }
 
         [Test]
-        public void Credit_Should_Not_Throw_Error_When_A_Transfer_To_B_With_1000()
+        public void Credit_Should_Not_Throw_Error_When_Sender_Transfer_To_Receiver_With_1000()
         {
             double senderBalanceBeforeTransfer = 1000;
+            double senderBalanceAfterTransfer = 0;
             double recriverBalanceBeforeTransfer = 0;
             string senderIBANNumber = "SenderIBANNumber";
             string receiverIBANNumber = "ReceiverIBANNumber";
@@ -204,6 +205,18 @@ namespace BankSystem.BLL.Test
                 Amount = amountExpected
             });
 
+            List<TransactionModel> tranasctions = result.Transaction.ToList();
+
+            // Assert Account
+            Assert.AreEqual(senderBalanceAfterTransfer, result.Balance);
+            Assert.AreEqual(1, result.Transaction.Count);
+            // Assert Transaction
+            Assert.AreEqual(amountExpected, tranasctions[0].Amount);
+            Assert.AreEqual(0, tranasctions[0].Fee);
+            Assert.AreEqual(senderBalanceAfterTransfer, tranasctions[0].OutStandingBalance);
+            Assert.AreEqual(senderIBANNumber, tranasctions[0].SenderIBANNumber);
+            Assert.AreEqual(receiverIBANNumber, tranasctions[0].ReceiverIBANNumber);
+            Assert.AreEqual((int)TransactionType.Credit, tranasctions[0].Type);
         }
         [Test]
         public void Debug()
@@ -212,11 +225,12 @@ namespace BankSystem.BLL.Test
             UnitOfWork uow = new UnitOfWork(db);
 
             BankSystemBLL bll = new BankSystemBLL(uow, _mapper);
-            //var result = bll.Debit(new DepositModel
-            //{
-            //    IBANNumber = "ABC",
-            //    Amount = 1
-            //});
+            var result = bll.Credit(new TransferModel
+            {
+                SenderIBANNumber = "NL19ABNA4521202713",
+                ReceiverIBANNumber = "NL55INGB3659950165",
+                Amount = 10
+            });
         }
     }
 }

@@ -25,10 +25,10 @@ namespace BankSystem.BLL
             try
             {
                 Account poco = _mapper.Map<AccountModel, Account>(account);
-                
+
                 //TODO: Get IBANNumber from website by selenium
-                if(String.IsNullOrEmpty(account.IBANNumber))
-                poco.IBANNumber = GetIBANNumber();
+                if (String.IsNullOrEmpty(account.IBANNumber))
+                    poco.IBANNumber = GetIBANNumber();
 
                 //TODO: Find the way to set defalut value
                 poco.CreatedDate = DateTime.Now;
@@ -86,21 +86,60 @@ namespace BankSystem.BLL
             }
         }
 
-        
+
 
         public AccountModel Credit(TransferModel transfer)
         {
-            // Get sender's account
+            try
+            {
+                string senderIBAN = transfer.SenderIBANNumber;
+                string receiverIBAN = transfer.ReceiverIBANNumber;
+                // Get sender's account
+                Account sender = GetAccount(transfer.SenderIBANNumber);
+                if (sender.Balance < transfer.Amount)
+                    throw new Exception("The money of sender is not enough.");
 
-            Account senderAccount = GetAccount(transfer.SenderIBANNumber);
-            if (senderAccount.Balance < transfer.Amount)
-                throw new Exception("The money of sender is not enough.");
+                // Receiver Transactin
+                Account receiver = GetAccount(transfer.ReceiverIBANNumber);
+                receiver.Balance += transfer.Amount;
+                receiver.Transaction.Add(new Transaction
+                {
+                    SenderIBANNumber = senderIBAN,
+                    ReceiverIBANNumber = receiverIBAN,
+                    Type = (int)TransactionType.Credit,
+                    Amount = transfer.Amount,
+                    Fee = 0,
+                    OutStandingBalance = receiver.Balance,
+                    CreatedDate = DateTime.Now
+                });
+                _unitOfWork.Commit();
 
-            Account receiverAccount = GetAccount(transfer.SenderIBANNumber);
+                // Sender Transaction
+                sender.Balance -= transfer.Amount;
+                sender.Transaction.Add(new Transaction
+                {
+                    SenderIBANNumber = senderIBAN,
+                    ReceiverIBANNumber = receiverIBAN,
+                    Type = (int)TransactionType.Credit,
+                    Amount = transfer.Amount,
+                    Fee = 0,
+                    OutStandingBalance = sender.Balance,
+                    CreatedDate = DateTime.Now
+                });
 
+                _unitOfWork.Commit();
 
-
-            return new AccountModel();
+                return _mapper.Map<Account, AccountModel>(sender);
+            }
+            catch (Exception ex)
+            {
+                _unitOfWork.RejectChanges();
+                throw ex;
+            }
+            finally
+            {
+                _unitOfWork.Dispose();
+            }
         }
 
         #region Private method

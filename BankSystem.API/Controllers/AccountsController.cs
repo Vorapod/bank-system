@@ -42,5 +42,12 @@ namespace BankSystem.API.Controllers
             return result;
         }
 
+        // PST api/accounts/transfer
+        [HttpPost]
+        public AccountModel Transfer([FromBody] TransferModel transfer)
+        {
+            var result = _bll.Credit(transfer);
+            return result;
+        }
     }
 }
