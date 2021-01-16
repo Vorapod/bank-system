@@ -9,9 +9,8 @@
 [POST: /api/accounts/transfer](#transfer) - Transfer  
 [GET: /api/accounts/{IBANNumber}](#get) - Get account by IBAN number
 ***
-
-## Table: Account
 <a name="tbl_account"></a>
+## Table: Account
 | Fields    |     Type      |Required| Description | Example
 |---------- |:------------- |:----:|:-----------|:-----------| 
 | IBANNumber (PK)   |  nchar (18)   |true| IBAN number | NL12ABCD3456789012
@@ -20,8 +19,8 @@
 | CurrentBalance    |  float     |true| Account balance | 1000.00
 | CreatedDate    |  datetime     |true| Account created date | 2021-01-16T12:34:26.22
 ***
-## Table: Transaction
 <a name="tbl_transaction"></a>
+## Table: Transaction
 | Fields    |     Type      |Required| Description | Example
 |---------- |:------------- |:----:|:-----------|:-----------| 
 | id (PK)   |  int (auto)   || Identity number | 1
