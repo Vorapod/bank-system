@@ -1,7 +1,17 @@
-﻿using System;
+﻿using AutoMapper;
+using BankSystem.BLL;
+using BankSystem.BLL.Interface;
+using BankSystem.BLL.Model;
+using BankSystem.DAL;
+using BankSystem.DAL.Interface;
+using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web.Http;
+using System.Web.Http.Dependencies;
+using Unity;
+using Unity.Lifetime;
 
 namespace BankSystem.API
 {
@@ -9,9 +19,6 @@ namespace BankSystem.API
     {
         public static void Register(HttpConfiguration config)
         {
-            // Web API configuration and services
-
-            // Web API routes
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(
