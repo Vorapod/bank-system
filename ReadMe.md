@@ -24,7 +24,7 @@
 | Fields    |     Type      |Required| Description | Example
 |---------- |:------------- |:----:|:-----------|:-----------| 
 | id (PK)   |  int (auto)   || Identity number | 1
-| IBANNumber (PK)   |  nchar (18)   |true| IBAN number | NL12ABCD3456789012
+| IBANNumber (FK)   |  nchar (18)   |true| Reference to Table Account | NL12ABCD3456789012
 | Type    |  int     |true| Transaction type | 1 = Deposit, 2 = Transfer
 | StatementType    |  int     |true| Statement type | 1 = Debit, 2 = Credit
 | Amount    |  float     |true| Transaction amount | 1000.00
