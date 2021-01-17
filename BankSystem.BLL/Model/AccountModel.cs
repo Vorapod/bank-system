@@ -9,9 +9,9 @@ namespace BankSystem.BLL.Model
     public class AccountModel
     {
         [DataMember]
-        [Required]
         public string IBANNumber { get; set; }
         [DataMember]
+        [Required]
         public string Name { get; set; }
         [DataMember]
         public int IsActive { get; set; }

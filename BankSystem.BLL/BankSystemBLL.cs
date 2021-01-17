@@ -4,8 +4,8 @@ using BankSystem.BLL.Interface;
 using BankSystem.BLL.Model;
 using BankSystem.DAL;
 using BankSystem.DAL.Interface;
+using OpenQA.Selenium.Chrome;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 
@@ -28,8 +28,7 @@ namespace BankSystem.BLL
             {
                 Account poco = _mapper.Map<AccountModel, Account>(account);
 
-                //TODO: Get IBANNumber from website by selenium
-                //poco.IBANNumber = GetIBANNumber();
+                poco.IBANNumber = GetIBANNumber();
 
                 //TODO: Find the way to set defalut value
                 poco.CreatedDate = DateTime.Now;
@@ -162,7 +161,14 @@ namespace BankSystem.BLL
         #region Private method
         private string GetIBANNumber()
         {
-            return RandomString(18);
+            string iBANNumber = string.Empty;
+            using (var driver = new ChromeDriver())
+            {
+                // Go to the home page
+                driver.Navigate().GoToUrl("http://randomiban.com/?country=Netherlands");
+                iBANNumber = driver.FindElementById("demo").Text;
+            }
+            return iBANNumber;
         }
 
         private static Random random = new Random();
