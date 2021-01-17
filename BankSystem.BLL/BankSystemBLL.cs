@@ -144,6 +144,8 @@ namespace BankSystem.BLL
         {
             try
             {
+                if (String.IsNullOrEmpty(iBANNumber))
+                    throw new ArgumentNullException(iBANNumber);
                 return _mapper.Map<Account, AccountModel>(GetAccount(iBANNumber));
             }
             catch (Exception ex)
