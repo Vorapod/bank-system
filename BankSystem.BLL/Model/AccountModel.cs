@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 
 namespace BankSystem.BLL.Model
@@ -8,6 +9,7 @@ namespace BankSystem.BLL.Model
     public class AccountModel
     {
         [DataMember]
+        [Required]
         public string IBANNumber { get; set; }
         [DataMember]
         public string Name { get; set; }

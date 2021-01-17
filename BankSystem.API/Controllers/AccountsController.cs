@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
+using BankSystem.API.Filters;
 using BankSystem.BLL;
 using BankSystem.BLL.Interface;
 using BankSystem.BLL.Model;
 using BankSystem.DAL;
 using BankSystem.DAL.Interface;
+using System.Net;
+using System.Net.Http;
 using System.Web.Http;
 
 namespace BankSystem.API.Controllers
@@ -19,33 +22,47 @@ namespace BankSystem.API.Controllers
 
         [HttpPost]
         [Route("")]
-        public AccountModel New([FromBody] AccountModel account)
+        [CustomExceptionFilter]
+        public IHttpActionResult New([FromBody] AccountModel account)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var result = _bll.AddAccount(account);
-            return result;
+            return Created($"http://localhost:44327/api/account/{result.IBANNumber}", result);
         }
         [Route("{iBANNumber}/Deposit")]
         [HttpPost]
-        public AccountModel Deposit(string iBANNumber,[FromBody] DepositModel deposit)
+        [CustomExceptionFilter]
+        public IHttpActionResult Deposit(string iBANNumber,[FromBody] DepositModel deposit)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var result = _bll.Deposit(iBANNumber, deposit);
-            return result;
+            return Ok(result);
         }
 
         [HttpPost]
         [Route("transfer")]
-        public AccountModel Transfer([FromBody] TransferModel transfer)
+        [CustomExceptionFilter]
+        public IHttpActionResult Transfer([FromBody] TransferModel transfer)
         {
             var result = _bll.Transfer(transfer);
-            return result;
+            return Ok(result);
         }
 
         [HttpGet]
         [Route("{iBANNumber}")]
-        public AccountModel GetAccount(string iBANNumber)
+        [CustomExceptionFilter]
+        public IHttpActionResult GetAccount(string iBANNumber)
         {
             var result = _bll.GetAccountById(iBANNumber);
-            return result;
+            return Ok(result);
         }
     }
 }

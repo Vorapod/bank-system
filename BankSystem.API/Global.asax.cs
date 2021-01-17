@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BankSystem.API.Filters;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -16,7 +17,10 @@ namespace BankSystem.API
             AreaRegistration.RegisterAllAreas();
             UnityConfig.RegisterComponents();
             GlobalConfiguration.Configure(WebApiConfig.Register);
+            
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+            GlobalConfiguration.Configuration.Filters.Add(
+    new CustomExceptionFilter());
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
         }

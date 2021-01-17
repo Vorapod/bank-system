@@ -29,8 +29,7 @@ namespace BankSystem.BLL
                 Account poco = _mapper.Map<AccountModel, Account>(account);
 
                 //TODO: Get IBANNumber from website by selenium
-                if (String.IsNullOrEmpty(account.IBANNumber))
-                    poco.IBANNumber = GetIBANNumber();
+                //poco.IBANNumber = GetIBANNumber();
 
                 //TODO: Find the way to set defalut value
                 poco.CreatedDate = DateTime.Now;
@@ -145,11 +144,6 @@ namespace BankSystem.BLL
         {
             try
             {
-                if (String.IsNullOrEmpty(iBANNumber))
-                {
-                    throw new ArgumentNullException(iBANNumber);
-                }
-
                 return _mapper.Map<Account, AccountModel>(GetAccount(iBANNumber));
             }
             catch (Exception ex)

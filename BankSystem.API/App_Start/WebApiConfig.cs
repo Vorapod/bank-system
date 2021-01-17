@@ -1,17 +1,5 @@
-﻿using AutoMapper;
-using BankSystem.BLL;
-using BankSystem.BLL.Interface;
-using BankSystem.BLL.Model;
-using BankSystem.DAL;
-using BankSystem.DAL.Interface;
-using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
+﻿using BankSystem.API.Filters;
 using System.Web.Http;
-using System.Web.Http.Dependencies;
-using Unity;
-using Unity.Lifetime;
 
 namespace BankSystem.API
 {
@@ -19,6 +7,8 @@ namespace BankSystem.API
     {
         public static void Register(HttpConfiguration config)
         {
+            config.Filters.Add(new CustomExceptionFilter());
+
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(

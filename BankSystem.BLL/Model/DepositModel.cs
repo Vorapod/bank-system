@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
 
 namespace BankSystem.BLL.Model
 {
@@ -6,6 +7,7 @@ namespace BankSystem.BLL.Model
     public class DepositModel
     {
         [DataMember]
+        [Required]
         public double Amount { get; set; }
     }
 }
