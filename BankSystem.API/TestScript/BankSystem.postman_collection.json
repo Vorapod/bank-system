@@ -1,0 +1,128 @@
+{
+	"id": "ad16d50a-b789-a8bb-2f82-20a5ac2349c8",
+	"name": "BankSystem",
+	"description": "",
+	"order": [
+		"b99f7438-3a46-6589-b253-2f7282102bd9",
+		"4df5b7bd-14ea-ace7-ef31-ab6cbe982e33",
+		"6281b5fd-f9c6-250c-d116-ebf9b3b5be2b",
+		"be99e49e-263b-346a-be19-ed4de7209970"
+	],
+	"folders": [],
+	"folders_order": [],
+	"timestamp": 1610538827953,
+	"owner": 0,
+	"public": false,
+	"requests": [
+		{
+			"id": "4df5b7bd-14ea-ace7-ef31-ab6cbe982e33",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "https://localhost:44327/api/accounts/ABC/deposit",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1610873578851,
+			"name": "Deposit",
+			"description": "",
+			"collectionId": "ad16d50a-b789-a8bb-2f82-20a5ac2349c8",
+			"responses": [],
+			"rawModeData": "{\n\t\"amount\": 1000.00\n}"
+		},
+		{
+			"id": "6281b5fd-f9c6-250c-d116-ebf9b3b5be2b",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "https://localhost:44327/api/accounts/transfer",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1610873577400,
+			"name": "Transfer",
+			"description": "",
+			"collectionId": "ad16d50a-b789-a8bb-2f82-20a5ac2349c8",
+			"responses": [],
+			"rawModeData": "{\n\t\"SenderIBANNumber\": \"NL05INGB9627994502\",\n\t\"ReceiverIBANNumber\": \"NL59ABNA1458509540\",\n\t\"Amount\": 10\n}\n"
+		},
+		{
+			"id": "b99f7438-3a46-6589-b253-2f7282102bd9",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "https://localhost:44327/api/accounts",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1610873579632,
+			"name": "Create new an account",
+			"description": "",
+			"collectionId": "ad16d50a-b789-a8bb-2f82-20a5ac2349c8",
+			"responses": [],
+			"rawModeData": "{\n\t\"IBANNumber\": \"ABC\",\n\t\"Name\": \"A\"\n}"
+		},
+		{
+			"id": "be99e49e-263b-346a-be19-ed4de7209970",
+			"headers": "",
+			"headerData": [],
+			"url": "https://localhost:44327/api/accounts/ABC",
+			"queryParams": [],
+			"pathVariables": {},
+			"pathVariableData": [],
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "ad16d50a-b789-a8bb-2f82-20a5ac2349c8",
+			"data": null,
+			"dataMode": "params",
+			"name": "Get account by IBAN Number",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1610873592006,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {}
+		}
+	]
+}
