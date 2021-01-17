@@ -230,7 +230,7 @@ Body _Success_
                 }
             ]
         },
-              {
+        {
             "IBANNumber": "NL12ABCD3456788888",
             "Name": "Foo2 Bar2",
             "IsActive": 1,
@@ -239,7 +239,6 @@ Body _Success_
             "Transactions": []
         }
     ]
-
 }
 ```
 ***
