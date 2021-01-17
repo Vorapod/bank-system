@@ -7,7 +7,9 @@
 [POST: /api/accounts](#post) - Adding new an account  
 [POST: /api/accounts/{IBANNumber}/deposit](#deposit) - Deposite  
 [POST: /api/accounts/transfer](#transfer) - Transfer  
+[GET: /api/accounts](#getall) - Get all account  
 [GET: /api/accounts/{IBANNumber}](#get) - Get account by IBAN number
+
 ***
 <a name="tbl_account"></a>
 ## Table: Account
@@ -173,6 +175,71 @@ Body _Success_
             "PartnerIBANNuberRef": "NL99ABCD09876543212"
         }
     ]
+}
+```
+***
+<a name="getall"></a>
+## URL: `/api/account`
+## METHOD: `GET`
+### Request
+Header
+```json
+{
+   "Content-Type": "application/json"
+}
+```
+### Response
+Header
+```json
+{
+   "Content-Type": "application/json"
+}
+```
+Body _Success_
+```json
+{
+    [
+        {
+            "IBANNumber": "NL12ABCD3456789012",
+            "Name": "Foo Bar",
+            "IsActive": 1,
+            "CurrentBalance": 899,
+            "CreatedDate": "2021-01-16T12:34:07.243",
+            "Transactions": [
+                {
+                    "Id": 1,
+                    "IBANNumber": "NL12ABCD3456789012",
+                    "Type": 1,
+                    "StatementType": 1,
+                    "Amount": 1000,
+                    "Fee": 1,
+                    "OutStandingBalance": 999,
+                    "CreatedDate": "2021-01-01T12:34:26.22",
+                    "PartnerIBANNuberRef": null
+                },
+                {
+                    "Id": 2,
+                    "IBANNumber": "NL12ABCD3456789012",
+                    "Type": 2,
+                    "StatementType": 2,
+                    "Amount": -100,
+                    "Fee": 0,
+                    "OutStandingBalance": 899,
+                    "CreatedDate": "2021-01-02T12:35:57.786778+07:00",
+                    "PartnerIBANNuberRef": "NL99ABCD09876543212"
+                }
+            ]
+        },
+              {
+            "IBANNumber": "NL12ABCD3456788888",
+            "Name": "Foo2 Bar2",
+            "IsActive": 1,
+            "CurrentBalance": 0,
+            "CreatedDate": "2021-01-16T12:34:07.243",
+            "Transactions": []
+        }
+    ]
+
 }
 ```
 ***
