@@ -36,10 +36,10 @@
 | PartnerIBANNuberRef    |  nchar (18)   |false| In case of transferring if sender used to refer to the recipient account and receiver used to refer to the sender account | NL99ABCD09876543212
 ***
 <a name="post"></a>
-## URL: `/api/v1/account`
+## URL: `/api/accounts`
 ## METHOD: `POST`
-### Request
-Header
+## Request
+ Header
 ```json
 {
    "Content-Type": "application/json"
@@ -48,19 +48,22 @@ Header
 Body
 ```json
 {
-   "IBANNumber": "NL12ABCD3456789012",
    "Name": "Foo Bar"
 }
 ```
-### Response
+## Response  
+> __Success Cases__  
+  
 Header
 ```json
 {
-   "Content-Type": "application/json"
+   "Content-Type": "application/json",
+   "Location": "http://localhost:44327/api/account/{IBANNumber}"
 }
 ```
-Body _Success_ with HTTP Code 203
+Body
 ```json
+HTTP Code 203
 {
     "IBANNumber": "NL12ABCD3456789012",
     "Name": "Foo Bar",
@@ -74,7 +77,7 @@ Body _Success_ with HTTP Code 203
 <a name="deposit"></a>
 ## URL: `/api/accounts/{IBANNumber}/deposit`
 ## METHOD: `POST`
-### Request
+## Request
 Header
 ```json
 {
@@ -87,14 +90,16 @@ Body
    "amount": "1000"
 }
 ```
-### Response
+## Response
+>__Success Cases__  
+
 Header
 ```json
 {
    "Content-Type": "application/json"
 }
 ```
-Body _Success_ with HTTP Code 200
+Body
 ```json
 {
     "IBANNumber": "NL12ABCD3456789012",
@@ -117,18 +122,20 @@ Body _Success_ with HTTP Code 200
     ]
 }
 ```
-Body _Fail_  with HTTP Code 400  
-If not found the account by IBAN Number system will show the message below
+> __Fail Cases__ 
+
 ```json
+HTTP Code 400  
 {
     Account with IBANNumber {iBANNumber} not found.
 }
 ```
+
 ***
 <a name="transfer"></a>
 ## URL: `/api/accounts/transfer`
 ## METHOD: `POST`
-### Request
+## Request
 Header
 ```json
 {
@@ -143,14 +150,16 @@ Body
 	"Amount": 1000
 }
 ```
-### Response
+## Response
+> __Success Cases__
+
 Header
 ```json
 {
    "Content-Type": "application/json"
 }
 ```
-Body _Success_  with HTTP Code 200
+Body
 ```json
 {
     "IBANNumber": "NL12ABCD3456789012",
@@ -184,32 +193,34 @@ Body _Success_  with HTTP Code 200
     ]
 }
 ```
-Body _Fail_  with HTTP Code 400  
-If not found the account by IBAN Number system will show the message below
+> __Fail Cases__  
 ```json
+HTTP Code 400  
 {
     Account with IBANNumber {iBANNumber} not found.
 }
 ```
 ***
 <a name="getall"></a>
-## URL: `/api/account`
+## URL: `/api/accounts`
 ## METHOD: `GET`
-### Request
+## Request
 Header
 ```json
 {
    "Content-Type": "application/json"
 }
 ```
-### Response
+## Response
+> __Success Cases__
+
 Header
 ```json
 {
    "Content-Type": "application/json"
 }
 ```
-Body _Success_ with HTTP Code 200
+
 ```json
 {
     [
@@ -260,21 +271,23 @@ Body _Success_ with HTTP Code 200
 <a name="get"></a>
 ## URL: `/api/account/{IBANNumber}`
 ## METHOD: `GET`
-### Request
+## Request
 Header
 ```json
 {
    "Content-Type": "application/json"
 }
 ```
-### Response
+## Response
+> __Success Cases__
+
 Header
 ```json
 {
    "Content-Type": "application/json"
 }
 ```
-Body _Success_ with HTTP Code 200
+Body
 ```json
 {
     "IBANNumber": "NL12ABCD3456789012",
@@ -308,9 +321,9 @@ Body _Success_ with HTTP Code 200
     ]
 }
 ```
-Body _Fail_  with HTTP Code 400  
-If not found the account by IBAN Number system will show the message below
+> __Fail Cases__
 ```json
+HTTP Code 400  
 {
     Account with IBANNumber {iBANNumber} not found.
 }
