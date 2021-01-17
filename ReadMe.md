@@ -59,7 +59,7 @@ Header
    "Content-Type": "application/json"
 }
 ```
-Body _Success_
+Body _Success_ with HTTP Code 203
 ```json
 {
     "IBANNumber": "NL12ABCD3456789012",
@@ -94,7 +94,7 @@ Header
    "Content-Type": "application/json"
 }
 ```
-Body _Success_
+Body _Success_ with HTTP Code 203
 ```json
 {
     "IBANNumber": "NL12ABCD3456789012",
@@ -115,6 +115,12 @@ Body _Success_
             "PartnerIBANNuberRef": null
         }
     ]
+}
+```
+Body _Fail_ when not found the account and return with HTTP Code 400 
+```json
+{
+    Account with IBANNumber {iBANNumber} not found.
 }
 ```
 ***
