@@ -1,12 +1,6 @@
-﻿using AutoMapper;
-using BankSystem.API.Filters;
-using BankSystem.BLL;
+﻿using BankSystem.API.Filters;
 using BankSystem.BLL.Interface;
 using BankSystem.BLL.Model;
-using BankSystem.DAL;
-using BankSystem.DAL.Interface;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 
 namespace BankSystem.API.Controllers
