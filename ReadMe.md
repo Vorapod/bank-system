@@ -123,6 +123,7 @@ Body
 }
 ```
 > __Fail Cases__ 
+>  
 
 ```json
 HTTP Code 400  
@@ -197,7 +198,7 @@ Body
 ```json
 HTTP Code 400  
 {
-    Account with IBANNumber {iBANNumber} not found.
+   Account with IBANNumber {iBANNumber} not found.
 }
 ```
 ***
@@ -325,7 +326,7 @@ Body
 ```json
 HTTP Code 400  
 {
-    Account with IBANNumber {iBANNumber} not found.
+    Account with IBANNumber iBANNumber not found.
 }
 ```
 ***
