@@ -94,7 +94,7 @@ Header
    "Content-Type": "application/json"
 }
 ```
-Body _Success_ with HTTP Code 203
+Body _Success_ with HTTP Code 200
 ```json
 {
     "IBANNumber": "NL12ABCD3456789012",
@@ -117,7 +117,8 @@ Body _Success_ with HTTP Code 203
     ]
 }
 ```
-Body _Fail_ when not found the account and return with HTTP Code 400 
+Body _Fail_  with HTTP Code 400  
+If not found the account by IBAN Number system will show the message below
 ```json
 {
     Account with IBANNumber {iBANNumber} not found.
@@ -149,7 +150,7 @@ Header
    "Content-Type": "application/json"
 }
 ```
-Body _Success_
+Body _Success_  with HTTP Code 200
 ```json
 {
     "IBANNumber": "NL12ABCD3456789012",
@@ -183,6 +184,13 @@ Body _Success_
     ]
 }
 ```
+Body _Fail_  with HTTP Code 400  
+If not found the account by IBAN Number system will show the message below
+```json
+{
+    Account with IBANNumber {iBANNumber} not found.
+}
+```
 ***
 <a name="getall"></a>
 ## URL: `/api/account`
@@ -201,7 +209,7 @@ Header
    "Content-Type": "application/json"
 }
 ```
-Body _Success_
+Body _Success_ with HTTP Code 200
 ```json
 {
     [
@@ -247,6 +255,7 @@ Body _Success_
     ]
 }
 ```
+
 ***
 <a name="get"></a>
 ## URL: `/api/account/{IBANNumber}`
@@ -265,7 +274,7 @@ Header
    "Content-Type": "application/json"
 }
 ```
-Body _Success_
+Body _Success_ with HTTP Code 200
 ```json
 {
     "IBANNumber": "NL12ABCD3456789012",
@@ -297,6 +306,13 @@ Body _Success_
             "PartnerIBANNuberRef": "NL99ABCD09876543212"
         }
     ]
+}
+```
+Body _Fail_  with HTTP Code 400  
+If not found the account by IBAN Number system will show the message below
+```json
+{
+    Account with IBANNumber {iBANNumber} not found.
 }
 ```
 ***
