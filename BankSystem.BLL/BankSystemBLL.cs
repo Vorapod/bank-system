@@ -6,6 +6,7 @@ using BankSystem.DAL;
 using BankSystem.DAL.Interface;
 using OpenQA.Selenium.Chrome;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 
@@ -157,7 +158,22 @@ namespace BankSystem.BLL
                 _unitOfWork.Dispose();
             }
         }
-
+        public IEnumerable<AccountModel> GetAccounts()
+        {
+            try
+            {
+                return _mapper.Map<IEnumerable<Account>, IEnumerable<AccountModel>>(_unitOfWork.AccountRepository.GetAll());
+            }
+            catch (Exception ex)
+            {
+                _unitOfWork.RejectChanges();
+                throw ex;
+            }
+            finally
+            {
+                _unitOfWork.Dispose();
+            }
+        }
         #region Private method
         private string GetIBANNumber()
         {
@@ -171,13 +187,7 @@ namespace BankSystem.BLL
             return iBANNumber;
         }
 
-        private static Random random = new Random();
-        public static string RandomString(int length)
-        {
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            return new string(Enumerable.Repeat(chars, length)
-              .Select(s => s[random.Next(s.Length)]).ToArray());
-        }
+       
 
         private Account GetAccount(string iBANNumber)
         {
@@ -188,6 +198,8 @@ namespace BankSystem.BLL
 
             return account;
         }
+
+      
         #endregion
 
     }

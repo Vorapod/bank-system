@@ -9,5 +9,6 @@ namespace BankSystem.BLL.Interface
         AccountModel Deposit(string iBANNumber, DepositModel deposit);
         AccountModel Transfer(TransferModel transfer);
         AccountModel GetAccountById(string iBANNumber);
+        IEnumerable<AccountModel> GetAccounts();
     }
 }

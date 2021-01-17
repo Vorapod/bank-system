@@ -64,5 +64,14 @@ namespace BankSystem.API.Controllers
             var result = _bll.GetAccountById(iBANNumber);
             return Ok(result);
         }
+
+        [HttpGet]
+        [Route("")]
+        [CustomExceptionFilter]
+        public IHttpActionResult GetAccounts()
+        {
+            var result = _bll.GetAccounts();
+            return Ok(result);
+        }
     }
 }
